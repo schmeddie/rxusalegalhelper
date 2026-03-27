@@ -5,7 +5,6 @@ import { v4 as uuidv4 } from "uuid";
 import { getAllCases, saveCase, deleteCase } from "@/lib/db";
 import type { Case } from "@/lib/types";
 import Link from "next/link";
-import ChargesPicker from "@/components/ChargesPicker";
 
 export default function CasesPage() {
   const [cases, setCases] = useState<Case[]>([]);
@@ -15,7 +14,6 @@ export default function CasesPage() {
     caseName: "",
     caseNumber: "",
     assignedJudge: "",
-    charges: "",
     defendantName: "",
   });
 
@@ -24,7 +22,7 @@ export default function CasesPage() {
   }, []);
 
   function resetForm() {
-    setForm({ caseName: "", caseNumber: "", assignedJudge: "", charges: "", defendantName: "" });
+    setForm({ caseName: "", caseNumber: "", assignedJudge: "", defendantName: "" });
     setEditingCase(null);
     setShowForm(false);
   }
@@ -34,7 +32,7 @@ export default function CasesPage() {
     const now = new Date().toISOString();
     const c: Case = editingCase
       ? { ...editingCase, ...form, updatedAt: now }
-      : { id: uuidv4(), ...form, createdAt: now, updatedAt: now };
+      : { id: uuidv4(), ...form, charges: "", createdAt: now, updatedAt: now };
     await saveCase(c);
     setCases(await getAllCases());
     resetForm();
@@ -45,7 +43,6 @@ export default function CasesPage() {
       caseName: c.caseName,
       caseNumber: c.caseNumber,
       assignedJudge: c.assignedJudge,
-      charges: c.charges,
       defendantName: c.defendantName,
     });
     setEditingCase(c);
@@ -97,10 +94,7 @@ export default function CasesPage() {
                   />
                 </div>
               ))}
-              <ChargesPicker
-                value={form.charges}
-                onChange={(charges) => setForm({ ...form, charges })}
-              />
+              <p className="text-xs text-muted">Charges are managed on the case detail page after creation.</p>
               <div className="flex gap-3 justify-end pt-2">
                 <button
                   type="button"
@@ -142,7 +136,6 @@ export default function CasesPage() {
               <div className="space-y-1 text-sm text-muted mb-4">
                 <p>Judge: {c.assignedJudge}</p>
                 <p>Defendant: {c.defendantName}</p>
-                <p className="truncate">Charges: {c.charges}</p>
               </div>
               <div className="flex gap-2">
                 <button

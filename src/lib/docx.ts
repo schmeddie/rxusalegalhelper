@@ -1,7 +1,7 @@
 import Docxtemplater from "docxtemplater";
 import PizZip from "pizzip";
 import { saveAs } from "file-saver";
-import type { Case, PlaceholderMapping, CaseVariable, Exhibit } from "./types";
+import type { Case, PlaceholderMapping, CaseVariable, Exhibit, Charge } from "./types";
 
 /**
  * Parse a .docx file and extract placeholders matching the pattern {PLACEHOLDER}
@@ -58,6 +58,38 @@ function formatEvidenceBlock(exhibits: Exhibit[]): string {
       }
     }
 
+    lines.push("");
+  }
+
+  return lines.join("\n");
+}
+
+/**
+ * Format charges into a Criminal Information block:
+ *
+ * COUNT ONE: § 1601. Murder
+ * OFFENSE TYPE: Class A Felony
+ * DESCRIPTION: ...
+ */
+function formatInformationBlock(charges: Charge[]): string {
+  if (charges.length === 0) return "";
+
+  const countWords = [
+    "", "ONE", "TWO", "THREE", "FOUR", "FIVE", "SIX", "SEVEN", "EIGHT",
+    "NINE", "TEN", "ELEVEN", "TWELVE", "THIRTEEN", "FOURTEEN", "FIFTEEN",
+    "SIXTEEN", "SEVENTEEN", "EIGHTEEN", "NINETEEN", "TWENTY",
+  ];
+
+  const lines: string[] = [];
+
+  for (const charge of charges) {
+    const countLabel = charge.countNumber <= 20
+      ? countWords[charge.countNumber]
+      : String(charge.countNumber);
+
+    lines.push(`COUNT ${countLabel}: ${charge.chargeName}`);
+    lines.push(`OFFENSE TYPE: ${charge.offenseClass}`);
+    lines.push(`DESCRIPTION: ${charge.description}`);
     lines.push("");
   }
 
@@ -203,7 +235,8 @@ export function generateDocument(
   fileData: ArrayBuffer,
   caseData: Case,
   mappings: PlaceholderMapping[],
-  exhibits: Exhibit[] = []
+  exhibits: Exhibit[] = [],
+  charges: Charge[] = []
 ): void {
   const zip = new PizZip(fileData);
   const doc = new Docxtemplater(zip, {
@@ -223,6 +256,15 @@ export function generateDocument(
       });
     } else if (variable === "evidence") {
       data[mapping.placeholder] = formatEvidenceBlock(exhibits);
+    } else if (variable === "information") {
+      data[mapping.placeholder] = formatInformationBlock(charges);
+    } else if (variable === "charges") {
+      // Legacy: just the charge names joined
+      if (charges.length > 0) {
+        data[mapping.placeholder] = charges.map((c) => c.chargeName).join("; ");
+      } else {
+        data[mapping.placeholder] = caseData[variable] || "";
+      }
     } else {
       data[mapping.placeholder] = caseData[variable] || "";
     }

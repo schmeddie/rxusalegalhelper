@@ -21,17 +21,50 @@ export type CaseVariable =
   | "charges"
   | "defendantName"
   | "currentDate"
-  | "evidence";
+  | "evidence"
+  | "information";
 
 export const CASE_VARIABLE_LABELS: Record<CaseVariable, string> = {
   caseName: "Case Name",
   caseNumber: "Case Number",
   assignedJudge: "Assigned Judge",
-  charges: "Charges",
+  charges: "Charges (names only)",
   defendantName: "Defendant Name",
   currentDate: "Current Date",
   evidence: "Evidence (Exhibits List)",
+  information: "Information (Charges Detail)",
 };
+
+export type OffenseClass =
+  | "Class A Felony"
+  | "Class B Felony"
+  | "Class C Felony"
+  | "Class A Misdemeanor"
+  | "Class B Misdemeanor"
+  | "Class C Misdemeanor"
+  | "Infraction"
+  | "Petty Offense";
+
+export const OFFENSE_CLASSES: OffenseClass[] = [
+  "Class A Felony",
+  "Class B Felony",
+  "Class C Felony",
+  "Class A Misdemeanor",
+  "Class B Misdemeanor",
+  "Class C Misdemeanor",
+  "Infraction",
+  "Petty Offense",
+];
+
+export interface Charge {
+  id: string;
+  caseId: string;
+  countNumber: number;
+  chargeName: string; // e.g. "§ 1601. Murder"
+  offenseClass: OffenseClass;
+  description: string;
+  createdAt: string;
+}
 
 export type ExhibitMediaType = "image" | "link" | "other";
 

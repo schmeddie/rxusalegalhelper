@@ -3,12 +3,13 @@
 import { useEffect, useState, useRef } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { v4 as uuidv4 } from "uuid";
-import { getCase, getAllTemplates, getTranscriptsForCase, saveTranscript, deleteTranscript, getExhibitsForCase } from "@/lib/db";
+import { getCase, getAllTemplates, getTranscriptsForCase, saveTranscript, deleteTranscript, getExhibitsForCase, getChargesForCase } from "@/lib/db";
 import { generateDocument } from "@/lib/docx";
-import type { Case, Template, CaseTranscript, Exhibit } from "@/lib/types";
+import type { Case, Template, CaseTranscript, Exhibit, Charge } from "@/lib/types";
 import Link from "next/link";
 import TranscriptViewer from "@/components/TranscriptViewer";
 import EvidenceManager from "@/components/EvidenceManager";
+import ChargesManager from "@/components/ChargesManager";
 
 export default function CaseDetailPage() {
   const params = useParams();
@@ -19,6 +20,7 @@ export default function CaseDetailPage() {
   const [transcripts, setTranscripts] = useState<CaseTranscript[]>([]);
   const [activeTranscript, setActiveTranscript] = useState<CaseTranscript | null>(null);
   const [exhibits, setExhibits] = useState<Exhibit[]>([]);
+  const [charges, setCharges] = useState<Charge[]>([]);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -33,18 +35,24 @@ export default function CaseDetailPage() {
     getAllTemplates().then(setTemplates);
     getTranscriptsForCase(params.id as string).then(setTranscripts);
     getExhibitsForCase(params.id as string).then(setExhibits);
+    getChargesForCase(params.id as string).then(setCharges);
   }, [params.id, router]);
 
-  // Refresh exhibits when EvidenceManager changes them
   function refreshExhibits() {
     getExhibitsForCase(params.id as string).then(setExhibits);
   }
 
+  function refreshCharges() {
+    getChargesForCase(params.id as string).then(setCharges);
+  }
+
   async function handleGenerate(template: Template) {
     if (!caseData) return;
-    // Fetch latest exhibits for evidence placeholder
-    const latestExhibits = await getExhibitsForCase(caseData.id);
-    generateDocument(template.fileData, caseData, template.mappings, latestExhibits);
+    const [latestExhibits, latestCharges] = await Promise.all([
+      getExhibitsForCase(caseData.id),
+      getChargesForCase(caseData.id),
+    ]);
+    generateDocument(template.fileData, caseData, template.mappings, latestExhibits, latestCharges);
     setShowTemplateModal(false);
   }
 
@@ -133,21 +141,12 @@ export default function CaseDetailPage() {
               <p className="text-foreground font-medium">{value}</p>
             </div>
           ))}
-          <div className="md:col-span-2">
-            <p className="text-xs text-muted mb-1">Charges</p>
-            <div className="flex flex-wrap gap-1.5">
-              {caseData.charges.split(";").filter(Boolean).map((charge) => (
-                <span
-                  key={charge.trim()}
-                  className="inline-block bg-primary/15 text-primary-hover text-xs px-2 py-1 rounded-md"
-                >
-                  {charge.trim()}
-                </span>
-              ))}
-              {!caseData.charges && <p className="text-foreground font-medium">None</p>}
-            </div>
-          </div>
         </div>
+      </div>
+
+      {/* Charges */}
+      <div className="bg-surface border border-border rounded-xl p-6 mb-8">
+        <ChargesManager caseId={caseData.id} onUpdate={refreshCharges} />
       </div>
 
       {/* Evidence / Exhibits */}

@@ -1,5 +1,5 @@
 import { openDB, type DBSchema, type IDBPDatabase } from "idb";
-import type { Case, Template, CaseTranscript, MessageNote, Exhibit } from "./types";
+import type { Case, Template, CaseTranscript, MessageNote, Exhibit, Charge } from "./types";
 
 interface LegalHelperDB extends DBSchema {
   cases: {
@@ -25,13 +25,18 @@ interface LegalHelperDB extends DBSchema {
     value: Exhibit;
     indexes: { "by-case": string };
   };
+  charges: {
+    key: string;
+    value: Charge;
+    indexes: { "by-case": string };
+  };
 }
 
 let dbPromise: Promise<IDBPDatabase<LegalHelperDB>> | null = null;
 
 function getDB() {
   if (!dbPromise) {
-    dbPromise = openDB<LegalHelperDB>("legal-helper", 3, {
+    dbPromise = openDB<LegalHelperDB>("legal-helper", 4, {
       upgrade(db, oldVersion) {
         if (oldVersion < 1) {
           db.createObjectStore("cases", { keyPath: "id" });
@@ -47,6 +52,10 @@ function getDB() {
         if (oldVersion < 3) {
           const exhibitStore = db.createObjectStore("exhibits", { keyPath: "id" });
           exhibitStore.createIndex("by-case", "caseId");
+        }
+        if (oldVersion < 4) {
+          const chargeStore = db.createObjectStore("charges", { keyPath: "id" });
+          chargeStore.createIndex("by-case", "caseId");
         }
       },
     });
@@ -155,4 +164,21 @@ export async function saveExhibit(e: Exhibit): Promise<void> {
 export async function deleteExhibit(id: string): Promise<void> {
   const db = await getDB();
   await db.delete("exhibits", id);
+}
+
+// Charges
+export async function getChargesForCase(caseId: string): Promise<Charge[]> {
+  const db = await getDB();
+  const charges = await db.getAllFromIndex("charges", "by-case", caseId);
+  return charges.sort((a, b) => a.countNumber - b.countNumber);
+}
+
+export async function saveCharge(c: Charge): Promise<void> {
+  const db = await getDB();
+  await db.put("charges", c);
+}
+
+export async function deleteCharge(id: string): Promise<void> {
+  const db = await getDB();
+  await db.delete("charges", id);
 }
