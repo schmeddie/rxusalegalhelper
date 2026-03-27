@@ -3,11 +3,12 @@
 import { useEffect, useState, useRef } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { v4 as uuidv4 } from "uuid";
-import { getCase, getAllTemplates, getTranscriptsForCase, saveTranscript, deleteTranscript } from "@/lib/db";
+import { getCase, getAllTemplates, getTranscriptsForCase, saveTranscript, deleteTranscript, getExhibitsForCase } from "@/lib/db";
 import { generateDocument } from "@/lib/docx";
-import type { Case, Template, CaseTranscript } from "@/lib/types";
+import type { Case, Template, CaseTranscript, Exhibit } from "@/lib/types";
 import Link from "next/link";
 import TranscriptViewer from "@/components/TranscriptViewer";
+import EvidenceManager from "@/components/EvidenceManager";
 
 export default function CaseDetailPage() {
   const params = useParams();
@@ -17,6 +18,7 @@ export default function CaseDetailPage() {
   const [showTemplateModal, setShowTemplateModal] = useState(false);
   const [transcripts, setTranscripts] = useState<CaseTranscript[]>([]);
   const [activeTranscript, setActiveTranscript] = useState<CaseTranscript | null>(null);
+  const [exhibits, setExhibits] = useState<Exhibit[]>([]);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -30,11 +32,19 @@ export default function CaseDetailPage() {
     });
     getAllTemplates().then(setTemplates);
     getTranscriptsForCase(params.id as string).then(setTranscripts);
+    getExhibitsForCase(params.id as string).then(setExhibits);
   }, [params.id, router]);
 
-  function handleGenerate(template: Template) {
+  // Refresh exhibits when EvidenceManager changes them
+  function refreshExhibits() {
+    getExhibitsForCase(params.id as string).then(setExhibits);
+  }
+
+  async function handleGenerate(template: Template) {
     if (!caseData) return;
-    generateDocument(template.fileData, caseData, template.mappings);
+    // Fetch latest exhibits for evidence placeholder
+    const latestExhibits = await getExhibitsForCase(caseData.id);
+    generateDocument(template.fileData, caseData, template.mappings, latestExhibits);
     setShowTemplateModal(false);
   }
 
@@ -138,6 +148,11 @@ export default function CaseDetailPage() {
             </div>
           </div>
         </div>
+      </div>
+
+      {/* Evidence / Exhibits */}
+      <div className="bg-surface border border-border rounded-xl p-6 mb-8">
+        <EvidenceManager caseId={caseData.id} onUpdate={refreshExhibits} />
       </div>
 
       {/* Case Transcripts */}

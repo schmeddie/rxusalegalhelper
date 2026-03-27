@@ -1,5 +1,5 @@
 import { openDB, type DBSchema, type IDBPDatabase } from "idb";
-import type { Case, Template, CaseTranscript, MessageNote } from "./types";
+import type { Case, Template, CaseTranscript, MessageNote, Exhibit } from "./types";
 
 interface LegalHelperDB extends DBSchema {
   cases: {
@@ -20,13 +20,18 @@ interface LegalHelperDB extends DBSchema {
     value: MessageNote;
     indexes: { "by-transcript": string; "by-case": string };
   };
+  exhibits: {
+    key: string;
+    value: Exhibit;
+    indexes: { "by-case": string };
+  };
 }
 
 let dbPromise: Promise<IDBPDatabase<LegalHelperDB>> | null = null;
 
 function getDB() {
   if (!dbPromise) {
-    dbPromise = openDB<LegalHelperDB>("legal-helper", 2, {
+    dbPromise = openDB<LegalHelperDB>("legal-helper", 3, {
       upgrade(db, oldVersion) {
         if (oldVersion < 1) {
           db.createObjectStore("cases", { keyPath: "id" });
@@ -38,6 +43,10 @@ function getDB() {
           const noteStore = db.createObjectStore("notes", { keyPath: "id" });
           noteStore.createIndex("by-transcript", "transcriptId");
           noteStore.createIndex("by-case", "caseId");
+        }
+        if (oldVersion < 3) {
+          const exhibitStore = db.createObjectStore("exhibits", { keyPath: "id" });
+          exhibitStore.createIndex("by-case", "caseId");
         }
       },
     });
@@ -129,4 +138,21 @@ export async function saveNote(n: MessageNote): Promise<void> {
 export async function deleteNote(id: string): Promise<void> {
   const db = await getDB();
   await db.delete("notes", id);
+}
+
+// Exhibits
+export async function getExhibitsForCase(caseId: string): Promise<Exhibit[]> {
+  const db = await getDB();
+  const exhibits = await db.getAllFromIndex("exhibits", "by-case", caseId);
+  return exhibits.sort((a, b) => a.exhibitNumber - b.exhibitNumber);
+}
+
+export async function saveExhibit(e: Exhibit): Promise<void> {
+  const db = await getDB();
+  await db.put("exhibits", e);
+}
+
+export async function deleteExhibit(id: string): Promise<void> {
+  const db = await getDB();
+  await db.delete("exhibits", id);
 }

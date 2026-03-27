@@ -20,7 +20,8 @@ export type CaseVariable =
   | "assignedJudge"
   | "charges"
   | "defendantName"
-  | "currentDate";
+  | "currentDate"
+  | "evidence";
 
 export const CASE_VARIABLE_LABELS: Record<CaseVariable, string> = {
   caseName: "Case Name",
@@ -29,7 +30,23 @@ export const CASE_VARIABLE_LABELS: Record<CaseVariable, string> = {
   charges: "Charges",
   defendantName: "Defendant Name",
   currentDate: "Current Date",
+  evidence: "Evidence (Exhibits List)",
 };
+
+export type ExhibitMediaType = "image" | "link" | "other";
+
+export interface Exhibit {
+  id: string;
+  caseId: string;
+  exhibitNumber: number; // 1, 2, 3...
+  exhibitLetter: string; // A, B, C...
+  name: string; // e.g. "Video Recording", "Supporting Affidavit"
+  mediaType: ExhibitMediaType;
+  source: string; // URL for link, description for other, or image data URL
+  description: string;
+  imageData?: string; // base64 data URL for uploaded images
+  createdAt: string;
+}
 
 export interface CaseTranscript {
   id: string;
