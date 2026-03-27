@@ -5,6 +5,7 @@ import { v4 as uuidv4 } from "uuid";
 import { getAllCases, saveCase, deleteCase } from "@/lib/db";
 import type { Case } from "@/lib/types";
 import Link from "next/link";
+import ChargesPicker from "@/components/ChargesPicker";
 
 export default function CasesPage() {
   const [cases, setCases] = useState<Case[]>([]);
@@ -96,17 +97,10 @@ export default function CasesPage() {
                   />
                 </div>
               ))}
-              <div>
-                <label className="block text-sm font-medium text-muted mb-1">Charges</label>
-                <textarea
-                  required
-                  value={form.charges}
-                  onChange={(e) => setForm({ ...form, charges: e.target.value })}
-                  placeholder="e.g. Wire Fraud (18 U.S.C. § 1343)"
-                  rows={3}
-                  className="w-full bg-background border border-border rounded-lg px-3 py-2 text-sm text-foreground placeholder:text-muted focus:outline-none focus:ring-2 focus:ring-primary resize-none"
-                />
-              </div>
+              <ChargesPicker
+                value={form.charges}
+                onChange={(charges) => setForm({ ...form, charges })}
+              />
               <div className="flex gap-3 justify-end pt-2">
                 <button
                   type="button"
