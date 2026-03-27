@@ -1,0 +1,631 @@
+==============================================================
+Guild: Judiciary
+Channel: USDC | Chambers of Judge Panda / united-states-v-crypticheim
+Topic: 1:26-cr-0215
+==============================================================
+
+[25/02/2026 22:11] whoc4n (pinned)
+https://trello.com/c/fhcoSokR/625-united-states-v-crypticheim
+
+{Embed}
+https://trello.com/c/fhcoSokR/625-united-states-v-crypticheim
+United States v. Crypticheim
+_IN THE UNITED STATES DISTRICT COURT FOR THE DISTRICT OF COLUMBIA_
+
+** United States v. Crypticheim**
+
+---
+
+** **Case Number:****
+
+1:26-cr-0215
+
+---
+
+** **Parties Information:****
+
+**Government:** Government
+
+**Attorney for Government:** Organization | Principal Atty
+
+**Defendant:** RobloxUser | Discord
+
+…
+Labels
+Active, Criminal
+
+
+[25/02/2026 22:11] whoc4n
+@sushiterrorist confirm
+
+
+[25/02/2026 22:11] whoc4n
+@suivantseul Yours
+
+
+[25/02/2026 22:12] newnumb3rwhodis
+Confirm
+
+
+[26/02/2026 04:21] s.seul
+Will be reviewed in the morning.
+
+
+[26/02/2026 08:22] celestialbella
+@Izzywizy5 I will take this one
+
+
+[26/02/2026 08:22] celestialbella
+I’ll assign magistrate @suivantseul to deal with all pretrial matters.
+
+
+[26/02/2026 09:25] celestialbella
+@sushiterrorist
+
+
+[26/02/2026 09:25] celestialbella
+The affidavit relies primarily on inference and does not clearly establish identification of the defendant. The Court requires additional factual support before determining whether probable cause exists.
+
+
+[26/02/2026 09:27] celestialbella
+Also the the affidavit names one victim, however there's two counts of murder.
+
+
+[26/02/2026 09:29] celestialbella
+The complaint identifies the offense of murder under FCC § 1601, and the supporting materials indicate that the Government alleges the deaths of two individuals arising from the same course of conduct. The Court finds no procedural defect in the complaint with respect to the number of charged offenses at this stage of the proceedings. The sufficiency of the evidence supporting each count remains subject to further review as the case progresses.
+
+
+[26/02/2026 09:30] celestialbella
+Magistrate suivant will take over from here.
+
+
+[26/02/2026 16:26] s.seul
+:ddc: **Paperless Order**
+
+I do not find probable cause and the application for a warrant is denied. 
+
+The affidavit fails to sufficiently identify the defendant and is largely inferential.
+
+I hereon order that the Court shall convene in a probable cause hearing. Alternatively, the government, upon appearance, can request a criminal summons.
+
+So ordered.
+
+-# CC: @sushiterrorist
+
+
+[26/02/2026 16:29] s.seul
+@sushiterrorist You may proceed whenever you are ready, we will continue asynchronously
+
+
+[26/02/2026 16:34] celestialbella
+This matter was referred to Magistrate Judge Suivant for pretrial proceedings.
+
+The Magistrate Judge has reviewed the Government’s application for a warrant and determined that the affidavit does not establish probable cause sufficient to support issuance of an arrest warrant. The Court has reviewed that determination and finds the Magistrate Judge’s analysis to be well-founded.
+
+Accordingly, the Magistrate Judge’s determination that probable cause has not been established for issuance of an arrest warrant is ADOPTED.
+
+The Government may proceed by:
+
+    1.    Filing a supplemental affidavit addressing the deficiencies identified by the Magistrate Judge;
+
+    2.    Requesting issuance of a criminal summons; or
+
+    3.    Presenting evidence at a probable cause hearing before the Magistrate Judge.
+
+The Magistrate Judge shall conduct further pretrial proceedings consistent with this Order.
+
+SO ORDERED.
+
+
+[27/02/2026 02:01] celestialbella
+Pinned a message.
+
+
+[27/02/2026 18:33] celestialbella
+@sushiterrorist H
+
+
+[27/02/2026 18:33] celestialbella
+Hi.
+
+
+[27/02/2026 18:33] celestialbella
+Let
+
+
+[27/02/2026 18:33] celestialbella
+Let's get this moving.
+
+
+[27/02/2026 18:34] celestialbella
+I'm setting a deadline of Monday, March 2nd.
+
+
+[27/02/2026 18:34] celestialbella
+Its getting tossed if there's no progress by then.
+
+
+[27/02/2026 20:01] newnumb3rwhodis
+@Carter
+
+
+[27/02/2026 20:02] newnumb3rwhodis
+Ok let's go to a probable cause hearing
+
+
+[27/02/2026 20:02] newnumb3rwhodis
+I'll just go step by step through the video evidence on paper for you people
+
+
+[27/02/2026 20:51] celestialbella
+@suivantseul
+
+
+[27/02/2026 20:52] celestialbella
+Remind me why you can’t just send the recording?
+
+
+[27/02/2026 20:52] newnumb3rwhodis
+There's a local rule on video evidence
+
+
+[27/02/2026 20:52] newnumb3rwhodis
+You haven't expressed permission for that to be circumvented
+
+
+[27/02/2026 20:53] newnumb3rwhodis
+Do you want the video to be posted here
+
+
+[27/02/2026 20:53] newnumb3rwhodis
+@BellaRevelation
+
+
+[27/02/2026 20:53] celestialbella
+..
+
+
+[27/02/2026 20:53] celestialbella
+I have to
+
+
+[27/02/2026 20:53] celestialbella
+give permission
+
+
+[27/02/2026 20:53] celestialbella
+for the government
+
+
+[27/02/2026 20:53] celestialbella
+to use evidence
+
+
+[27/02/2026 20:53] celestialbella
+Is essentially what you’re saying
+
+
+[27/02/2026 20:55] newnumb3rwhodis
+https://trello.com/c/Sq7XttNf/43-local-rule-on-video-footage
+
+The Court **will not ordinarily** review video footage linked in any application for arrest warrant for the purpose of establishing probable cause for the issuance of the arrest warrant. Instead, law enforcement officers are authorized to **(i) identify the existence of the footage; (ii) describe the general nature of the footage; and (iii) insert frames of videos into the affidavit, label them, and identify what is occurring in and/or around the frames.**
+
+**The Court may, after reviewing the affidavit, request the affiant to produce such footage for its review.**
+
+{Embed}
+https://trello.com/c/Sq7XttNf/43-local-rule-on-video-footage
+Local Rule on Video Footage
+** (a) Limitation of Footage in Arrest Warrant Affidavits**
+
+The Court will not ordinarily review video footage linked in any application for arrest warrant for the purpose of establishing probable cause for the issuance of the arrest warrant. Instead, law enforcement officers are authorized to (i) identify the existence of the footage; (ii) descr...
+
+
+[27/02/2026 20:55] newnumb3rwhodis
+You have not requested the footage
+
+
+[27/02/2026 20:55] newnumb3rwhodis
+Do you wish for it to be sent
+
+
+[27/02/2026 20:55] newnumb3rwhodis
+I'm simply not trying to get myself hemmed up by violating the very rules you're bound to enforce your honor
+
+
+[27/02/2026 20:56] celestialbella
+That is a stupid local rule
+
+
+[27/02/2026 20:56] celestialbella
+Present your evidence
+
+
+[27/02/2026 20:56] newnumb3rwhodis
+It poses a serious detriment to speedy filing of much needed complaints
+
+
+[27/02/2026 20:57] celestialbella
+I’ll see if I can have that either modified or removed, but my chamber my rules so that LR doesn’t apply here. Present any and all evidence required to argue your case.
+
+
+[27/02/2026 20:57] celestialbella
+@Attorney General
+
+
+[27/02/2026 20:57] newnumb3rwhodis
+https://medal.tv/games/roblox/clips/m4lKqSwncQv6E-vY-?invite=cr-MSxHN2UsNDI5NDQ1NzEx&v=44
+
+{Embed}
+c_rossroads
+https://medal.tv/games/roblox/clips/m4lKqSwncQv6E-vY-?invite=cr-MSxHN2UsNDI5NDQ1NzEx&v=44
+Political Assassination - Clipped Roblox with Medal.tv
+9 Views - Watch Political Assassination by c_rossroads and millions of other Roblox videos on Medal. #roblox, #washingtondistrictofcolumbia
+https://images-ext-1.discordapp.net/external/bcRRlAd2OWOCNPE5uxuFC4zVSJw9OIFHFAhRPAp0iLg/%3Fauth%3Dexp%3D1772245800~data%3DNDI5NDQ1NzExLG00bEtxU3duY1F2NkUtdlktLDFlMkFkNkVPYUUsLTE~hmac%3D2cf0546053dfdf4b64f18f31047b2a4a79059bac1946e2acd62e1cf393c912c4%26width%3D1280/https/cdn.medal.tv/ugcc/content-thumbnail/Bo3_EejHa0NR733oFUYd1Q-0.jpg
+
+
+[27/02/2026 20:57] celestialbella
+You can speak now
+
+
+[27/02/2026 20:57] newnumb3rwhodis
+As you can see, your honor, crypticheim is the **only** individual in the room aside from scottlparker
+
+
+[27/02/2026 20:58] newnumb3rwhodis
+There is no possible way he was killed by anyone but him
+
+
+[27/02/2026 20:59] split75th
+can speak now thank you your honor
+
+
+[27/02/2026 21:00] split75th
+i do concur with the affiant
+
+
+[27/02/2026 21:09] celestialbella
+The Magistrate will deal with pretrial matters.
+
+
+[27/02/2026 21:10] split75th
+thanks your honor
+
+
+[27/02/2026 21:10] split75th
+this will be expeditious
+
+
+[01/03/2026 00:11] celestialbella
+@suivantseul You need to get this moving.
+
+
+[01/03/2026 03:55] split75th
+the government is still awaiting this honorable court in regards to pretrial proceedings, we would like to respect the ever so necessary procedures; however; we do have motions pending to submit if this can be slightly expeditious
+
+
+[01/03/2026 19:02] s.seul
+Thank you
+
+
+[01/03/2026 19:02] s.seul
+I find probable cause
+
+
+[01/03/2026 19:02] newnumb3rwhodis
+Thank you your honor
+
+
+[01/03/2026 19:03] s.seul
+@General_Typhoon If you could please issue an arrest warrant
+
+
+[01/03/2026 19:03] mrredacted_
+warrant will be issued
+
+
+[01/03/2026 19:03] mrredacted_
+yes
+
+
+[01/03/2026 19:05] mrredacted_
+https://drive.google.com/file/d/1-EFFW5nAlm2m48L_eqw0cl_SzkzdeFVD/view?usp=sharing
+
+
+[03/03/2026 18:07] celestialbella
+@suivantseul The defendant is present in this discord btw.
+
+
+[03/03/2026 18:07] celestialbella
+@Federal Public Defender One of you will be needed here.
+
+
+[03/03/2026 18:09] celestialbella
+@CrypticHeim You now have permission to speak here. Will you require a public defender or do you have a private attorney who can represent you?
+
+
+[06/03/2026 15:17] mrredacted_
+
+
+
+[06/03/2026 15:18] mrredacted_
+@0dure
+
+
+[06/03/2026 15:25] ethan.8897
+hi
+
+
+[06/03/2026 15:26] ethan.8897
+is a PD being appointed?
+
+
+[07/03/2026 01:45] .panda_s
+
+
+
+[07/03/2026 01:45] .panda_s
+@Detachment_Result confirm
+
+
+[07/03/2026 03:05] roundsquare6018
+hello
+
+
+[07/03/2026 06:08] mrredacted_
+this case is reassigned to hon. pandaking
+
+
+[07/03/2026 06:08] mrredacted_
+@pandaking314
+
+
+[07/03/2026 18:01] .panda_s
+@Detachment_Result, are you in contact with the Defendant?
+
+
+[07/03/2026 20:35] roundsquare6018
+I've reached out to them your Honor
+
+
+[07/03/2026 22:04] .panda_s
+Do they plan on appearing?
+
+
+[08/03/2026 01:50] roundsquare6018
+Your Honor my client is already in the server
+
+
+[08/03/2026 01:51] .panda_s
+I'm aware but an initial appearance hasn't been done yet.
+
+
+[08/03/2026 01:56] roundsquare6018
+Understood. We're ready then for client to be arraigned.
+
+
+[08/03/2026 02:35] .panda_s
+Court will proceed with initial appearance. 
+
+In accordance with Fed. R. Crim. P. (5)(d), you shall be informed of the following:
+
+Firstly, you have the right to be informed of the nature of the charges pending against you.
+- The government has filed a criminal complaint charging you with Murder (FCC § 1601)
+
+- You have the right to have the assistance of counsel for your defense.
+- You have the right to remain silent to prevent self incrimination. Anything you can say may be used against you. The invocation of this right to silence may not be used against you by any party for any reason.
+
+You have the right to invoke a preliminary hearing under Fed. R. Crim. P. 5.1 which you are afforded the opportunity to request during your arraignment.
+
+Do you understand these rights as I have explained them to you and do you have any questions at this time?
+
+@CrypticHeim
+
+
+[08/03/2026 17:08] .panda_s
+@Detachment_Result, is the Defendant aware of this case?
+
+
+[08/03/2026 20:16] thesonofjupiter
+I understand my rights
+
+
+[08/03/2026 20:18] .panda_s
+Do you want a preliminary hearing?
+
+
+[08/03/2026 23:09] ethan.8897
+@CrypticHeim ^
+
+
+[09/03/2026 00:59] roundsquare6018
+@pandaking314 Your Honor we would like a prelim
+
+
+[10/03/2026 19:20] .panda_s
+Apologies for the delay, only now noticed this.
+
+
+[10/03/2026 19:22] .panda_s
+In the interest of all parties, the Court will now conduct the preliminary examination in an asynchronous manner. Consistent with prior precedent of this Court, we shall follow the same process as previously adopted. 
+
+At this preliminary hearing, the defendant shall have the right to cross-examine adverse witnesses and to introduce evidence on their behalf. However, the defendant may not object to the admission of evidence on the grounds that it was unlawfully obtained. Should this Court find probable cause to believe that an offense has been committed and that the defendant committed it, the matter will proceed to further proceedings pursuant to Fed. R. Crim. P. 5.1(e).
+
+Given the asynchronous format of these proceedings, the parties shall retain the right to raise objections to any matter at any time prior to the conclusion of the hearing.
+
+The Government is hereby directed to submit all relevant evidence and identify any witnesses it intends to rely upon for the preliminary hearing in support of its allegations. Counsel of record will present the Government’s primary argument at the preliminary examination before this Court. Such submissions shall be made **no later than 48 hours from the issuance of this Order**.
+
+CC: @0dure @CrypticHeim  @Detachment_Result
+
+
+[10/03/2026 19:40] ethan.8897
+your honour, i ask the previous order be vacated as to allow us to file a CI
+
+
+[10/03/2026 19:42] .panda_s
+What is the expected timeframe for the filing?
+
+
+[10/03/2026 19:42] ethan.8897
+would be today
+
+
+[10/03/2026 19:42] ethan.8897
+or tomorrow
+
+
+[10/03/2026 19:42] ethan.8897
+depending on how much document spam i gotta do
+
+
+[10/03/2026 19:46] .panda_s
+Thank you for notifying the Court but the order will be maintained. However, you are permitted to file a CI, and if so is done then the hearing would be rendered moot as the CI would supersede the Complaint.
+
+
+[10/03/2026 20:22] ethan.8897
+Respectfully submitted,
+
+Criminal Information
+https://drive.google.com/file/d/1yarCfIRaXdowu0pDlSrk37llwyrHzOZ3/view?usp=sharing
+
+
+[10/03/2026 20:23] ethan.8897
+cc: @pandaking314 @CrypticHeim @Detachment_Result
+
+
+[10/03/2026 20:35] .panda_s
+Finding that the Government has filed a criminal information against the Defendant, the Rule 5.1(a) exemption renders the previously scheduled hearing moot, and the Court will proceed accordingly. 
+
+Is the defense ready to proceed with arraignment? @Detachment_Result @CrypticHeim
+
+
+[11/03/2026 02:55] roundsquare6018
+Yes your Honor. @pandaking314
+
+
+[11/03/2026 07:01] roundsquare6018
+@pandaking314 Your Honor the Defence would like to momentarily set aside arraignment while we negotiate a plea deal with the government.
+
+
+[11/03/2026 09:55] ethan.8897
+just to inform the court, we have rejected the plea offer submitted to us by the defendant
+
+
+[11/03/2026 09:55] ethan.8897
+we are ok with proceeding
+
+
+[11/03/2026 13:48] .panda_s
+Okay.
+
+
+[11/03/2026 13:51] .panda_s
+@CrypticHeim @Detachment_Result 
+
+The Court will proceed with arraignment.
+
+I am going to be explaining your rights and (in brief) the charges laid against you.
+
+Firstly, you have the right to be informed of the nature of the charges pending against you. The government has filed an information charging you with one count of criminal trespass (​FCC § 1712 (1); class A misdemeanor), two counts of murder (FCC § 1601 (a); class A felony), and two counts of misapplication of entrusted property (FCC § 1737; class A misdemeanor).
+
+You have the right to remain silent to prevent self incrimination, anything you say can and may be used against you, and the invocation of this right may not be used against you by any party for any reason.
+
+How does the Defense plead?
+
+
+[12/03/2026 12:06] .panda_s
+@CrypticHeim
+
+
+[13/03/2026 00:54] roundsquare6018
+Finalizing a plea deal
+
+
+[13/03/2026 00:54] roundsquare6018
+However for the Court's information, my Client doesn't have access to Discord as he's being deployed.
+
+
+[13/03/2026 00:54] roundsquare6018
+He is aware of the proposed plea and has accepted any decision from that.
+
+
+[13/03/2026 01:45] .panda_s
+He's being deployed IRL?
+
+
+[13/03/2026 01:46] .panda_s
+For the Court to accept a plea agreement, colloquy with the Defendant has to be done, is he currently unable to do that?
+
+
+[13/03/2026 01:52] roundsquare6018
+Correct your Honor. I've been in constant communication with him since.  
+
+I am not at liberty to disclose exact client communications, however, as an officer of this Court I can confirm he has given permission for me to accept that plea deal.
+
+
+[13/03/2026 01:52] roundsquare6018
+The parties simply needed to strike the fine given he would obviously not be able to pay it immediately.
+
+
+[15/03/2026 08:29] .panda_s
+disclosure
+
+{Attachments}
+https://cdn.discordapp.com/attachments/1476340750265614336/1482656861978234952/image.png?ex=69c0f9ce&is=69bfa84e&hm=dd20e9ed0f7303f58889fd84c020669cf4660417047743101d6f530c898dd7b8&
+
+
+[15/03/2026 08:37] .panda_s
+@Detachment_Result, this is a Felony case, meaning the Defendant must be present for colloquy otherwise I cannot accept the plea agreement. Even if he has entrusted you with pleading guilty on his behalf, there are procedural matters that must be done with the defendant directly and he has to enter the plea himself on the record.  
+
+However, an entry of a not guilty plea is possible and the Court can proceed with the case.
+
+
+[15/03/2026 22:55] .panda_s
+@Detachment_Result @0dure 
+
+The Court has been informed that the Defendant will be unable to participate in these proceedings and is therefore unable to enter a plea directly before the Court. The Court cannot consider a plea agreement since the Defendant has to be present for colloquy, as the charges involve Felony offenses. The Court maintains this posture even if the Defendant has expressly delegated the authority to his defense attorney to enter a plea on his behalf. Accordingly, if neither party objects, pursuant to Fed. R. Crim. P. 11(a)(4) the Court enters a plea of **not guilty** on his behalf and the matter will proceed.
+
+
+[16/03/2026 19:28] .panda_s
+Since no objections have been presented, we'll proceed. Should either party have concerns, they may present them at any time before the deadline. @Detachment_Result @0dure 
+
+**WHEREAS**, the entry of a plea has been done on behalf of the Defendant and preliminary proceedings have concluded, it is hereby:
+
+**ORDERED** that pre-trial motions and the Government’s disclosure of evidence and witness lists shall be due by **March 23, 2026, at 11:59 pm CST (UTC−6)**. All discovery materials, exhibits, and witness lists shall be submitted in a consolidated disclosure filing for the benefit of the Court.
+**ORDERED** that the defense shall provide any required advance notice of intent to assert an alibi, insanity, or public authority defense by **March 23, 2026, at 11:59 pm CST (UTC−6)**.
+
+
+[21/03/2026 00:17] ethan.8897
+i resigned, i withdraw as counsel for the united states
+
+
+[21/03/2026 00:37] .panda_s
+@Attorney General, should the government wish to continue, substitute counsel is to be appointed no later than **48 hours** of the entry of this order.
+
+
+[21/03/2026 00:41] .panda_s
+Proceedings stayed pending Government's response.
+
+
+[21/03/2026 20:00] .panda_s
+
+
+
+[21/03/2026 20:00] .panda_s
+@megaminer2313 confirm
+
+
+[21/03/2026 20:00] sir_eddie
+confirmed
+
+
+[21/03/2026 22:34] .panda_s
+How does the Government wish to proceed?
+
+
+[21/03/2026 23:54] sir_eddie
+I will have the filing for you soon your honour
+
+
+==============================================================
+Exported 125 message(s)
+==============================================================
