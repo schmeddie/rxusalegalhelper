@@ -1,12 +1,13 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useParams, useRouter } from "next/navigation";
-import { getCase } from "@/lib/db";
-import { getAllTemplates } from "@/lib/db";
+import { v4 as uuidv4 } from "uuid";
+import { getCase, getAllTemplates, getTranscriptsForCase, saveTranscript, deleteTranscript } from "@/lib/db";
 import { generateDocument } from "@/lib/docx";
-import type { Case, Template } from "@/lib/types";
+import type { Case, Template, CaseTranscript } from "@/lib/types";
 import Link from "next/link";
+import TranscriptViewer from "@/components/TranscriptViewer";
 
 export default function CaseDetailPage() {
   const params = useParams();
@@ -14,6 +15,9 @@ export default function CaseDetailPage() {
   const [caseData, setCaseData] = useState<Case | null>(null);
   const [templates, setTemplates] = useState<Template[]>([]);
   const [showTemplateModal, setShowTemplateModal] = useState(false);
+  const [transcripts, setTranscripts] = useState<CaseTranscript[]>([]);
+  const [activeTranscript, setActiveTranscript] = useState<CaseTranscript | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     const id = params.id as string;
@@ -25,12 +29,42 @@ export default function CaseDetailPage() {
       setCaseData(c);
     });
     getAllTemplates().then(setTemplates);
+    getTranscriptsForCase(params.id as string).then(setTranscripts);
   }, [params.id, router]);
 
   function handleGenerate(template: Template) {
     if (!caseData) return;
     generateDocument(template.fileData, caseData, template.mappings);
     setShowTemplateModal(false);
+  }
+
+  function handleTranscriptUpload(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file || !caseData) return;
+
+    const reader = new FileReader();
+    reader.onload = async () => {
+      const text = reader.result as string;
+      const transcript: CaseTranscript = {
+        id: uuidv4(),
+        caseId: caseData.id,
+        fileName: file.name,
+        rawText: text,
+        createdAt: new Date().toISOString(),
+      };
+      await saveTranscript(transcript);
+      const updated = await getTranscriptsForCase(caseData.id);
+      setTranscripts(updated);
+      setActiveTranscript(transcript);
+    };
+    reader.readAsText(file);
+    if (fileInputRef.current) fileInputRef.current.value = "";
+  }
+
+  async function handleDeleteTranscript(id: string) {
+    await deleteTranscript(id);
+    if (activeTranscript?.id === id) setActiveTranscript(null);
+    if (caseData) setTranscripts(await getTranscriptsForCase(caseData.id));
   }
 
   if (!caseData) {
@@ -50,13 +84,29 @@ export default function CaseDetailPage() {
           <h1 className="text-2xl font-bold">{caseData.caseName}</h1>
           <p className="text-muted text-sm mt-1">Case #{caseData.caseNumber}</p>
         </div>
-        <button
-          onClick={() => setShowTemplateModal(true)}
-          className="bg-primary hover:bg-primary-hover text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
-        >
-          + Add Document
-        </button>
+        <div className="flex gap-2">
+          <button
+            onClick={() => fileInputRef.current?.click()}
+            className="border border-border hover:border-primary/50 text-foreground px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+          >
+            Upload Transcript
+          </button>
+          <button
+            onClick={() => setShowTemplateModal(true)}
+            className="bg-primary hover:bg-primary-hover text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+          >
+            + Add Document
+          </button>
+        </div>
       </div>
+
+      <input
+        ref={fileInputRef}
+        type="file"
+        accept=".txt"
+        onChange={handleTranscriptUpload}
+        className="hidden"
+      />
 
       {/* Case Details */}
       <div className="bg-surface border border-border rounded-xl p-6 mb-8">
@@ -75,12 +125,75 @@ export default function CaseDetailPage() {
           ))}
           <div className="md:col-span-2">
             <p className="text-xs text-muted mb-1">Charges</p>
-            <p className="text-foreground font-medium">{caseData.charges}</p>
+            <div className="flex flex-wrap gap-1.5">
+              {caseData.charges.split(";").filter(Boolean).map((charge) => (
+                <span
+                  key={charge.trim()}
+                  className="inline-block bg-primary/15 text-primary-hover text-xs px-2 py-1 rounded-md"
+                >
+                  {charge.trim()}
+                </span>
+              ))}
+              {!caseData.charges && <p className="text-foreground font-medium">None</p>}
+            </div>
           </div>
         </div>
       </div>
 
-      {/* Quick Generate Info */}
+      {/* Case Transcripts */}
+      <div className="bg-surface border border-border rounded-xl p-6 mb-8">
+        <h2 className="text-sm font-semibold text-muted uppercase tracking-wider mb-4">
+          Case Transcripts
+        </h2>
+
+        {transcripts.length === 0 && !activeTranscript ? (
+          <div className="text-center py-8">
+            <svg className="w-12 h-12 mx-auto text-border mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
+            </svg>
+            <p className="text-muted text-sm mb-2">No transcripts uploaded.</p>
+            <p className="text-muted text-xs">
+              Upload a Discord channel export (.txt) to view and annotate the case proceedings.
+            </p>
+          </div>
+        ) : (
+          <>
+            {/* Transcript tabs */}
+            {transcripts.length > 0 && (
+              <div className="flex gap-2 mb-4 flex-wrap">
+                {transcripts.map((t) => (
+                  <div key={t.id} className="flex items-center gap-1">
+                    <button
+                      onClick={() => setActiveTranscript(activeTranscript?.id === t.id ? null : t)}
+                      className={`text-sm px-3 py-1.5 rounded-lg transition-colors ${
+                        activeTranscript?.id === t.id
+                          ? "bg-primary/15 text-primary-hover border border-primary/30"
+                          : "bg-background border border-border text-muted hover:text-foreground"
+                      }`}
+                    >
+                      {t.fileName}
+                    </button>
+                    <button
+                      onClick={() => handleDeleteTranscript(t.id)}
+                      className="text-xs text-danger hover:text-danger-hover transition-colors p-1"
+                      title="Delete transcript"
+                    >
+                      &times;
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {/* Active transcript viewer */}
+            {activeTranscript && (
+              <TranscriptViewer transcript={activeTranscript} caseId={caseData.id} />
+            )}
+          </>
+        )}
+      </div>
+
+      {/* Document Generation */}
       <div className="bg-surface border border-border rounded-xl p-6">
         <h2 className="text-sm font-semibold text-muted uppercase tracking-wider mb-4">Document Generation</h2>
         {templates.length === 0 ? (

@@ -31,6 +31,23 @@ export const CASE_VARIABLE_LABELS: Record<CaseVariable, string> = {
   currentDate: "Current Date",
 };
 
+export interface CaseTranscript {
+  id: string;
+  caseId: string;
+  fileName: string;
+  rawText: string;
+  createdAt: string;
+}
+
+export interface MessageNote {
+  id: string;
+  caseId: string;
+  transcriptId: string;
+  messageId: number;
+  text: string;
+  createdAt: string;
+}
+
 export interface Template {
   id: string;
   name: string;

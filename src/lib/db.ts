@@ -1,5 +1,5 @@
 import { openDB, type DBSchema, type IDBPDatabase } from "idb";
-import type { Case, Template } from "./types";
+import type { Case, Template, CaseTranscript, MessageNote } from "./types";
 
 interface LegalHelperDB extends DBSchema {
   cases: {
@@ -10,16 +10,35 @@ interface LegalHelperDB extends DBSchema {
     key: string;
     value: Template;
   };
+  transcripts: {
+    key: string;
+    value: CaseTranscript;
+    indexes: { "by-case": string };
+  };
+  notes: {
+    key: string;
+    value: MessageNote;
+    indexes: { "by-transcript": string; "by-case": string };
+  };
 }
 
 let dbPromise: Promise<IDBPDatabase<LegalHelperDB>> | null = null;
 
 function getDB() {
   if (!dbPromise) {
-    dbPromise = openDB<LegalHelperDB>("legal-helper", 1, {
-      upgrade(db) {
-        db.createObjectStore("cases", { keyPath: "id" });
-        db.createObjectStore("templates", { keyPath: "id" });
+    dbPromise = openDB<LegalHelperDB>("legal-helper", 2, {
+      upgrade(db, oldVersion) {
+        if (oldVersion < 1) {
+          db.createObjectStore("cases", { keyPath: "id" });
+          db.createObjectStore("templates", { keyPath: "id" });
+        }
+        if (oldVersion < 2) {
+          const transcriptStore = db.createObjectStore("transcripts", { keyPath: "id" });
+          transcriptStore.createIndex("by-case", "caseId");
+          const noteStore = db.createObjectStore("notes", { keyPath: "id" });
+          noteStore.createIndex("by-transcript", "transcriptId");
+          noteStore.createIndex("by-case", "caseId");
+        }
       },
     });
   }
@@ -66,4 +85,48 @@ export async function saveTemplate(t: Template): Promise<void> {
 export async function deleteTemplate(id: string): Promise<void> {
   const db = await getDB();
   await db.delete("templates", id);
+}
+
+// Transcripts
+export async function getTranscriptsForCase(caseId: string): Promise<CaseTranscript[]> {
+  const db = await getDB();
+  return db.getAllFromIndex("transcripts", "by-case", caseId);
+}
+
+export async function getTranscript(id: string): Promise<CaseTranscript | undefined> {
+  const db = await getDB();
+  return db.get("transcripts", id);
+}
+
+export async function saveTranscript(t: CaseTranscript): Promise<void> {
+  const db = await getDB();
+  await db.put("transcripts", t);
+}
+
+export async function deleteTranscript(id: string): Promise<void> {
+  const db = await getDB();
+  // Also delete associated notes
+  const notes = await db.getAllFromIndex("notes", "by-transcript", id);
+  const tx = db.transaction(["transcripts", "notes"], "readwrite");
+  await tx.objectStore("transcripts").delete(id);
+  for (const note of notes) {
+    await tx.objectStore("notes").delete(note.id);
+  }
+  await tx.done;
+}
+
+// Notes
+export async function getNotesForTranscript(transcriptId: string): Promise<MessageNote[]> {
+  const db = await getDB();
+  return db.getAllFromIndex("notes", "by-transcript", transcriptId);
+}
+
+export async function saveNote(n: MessageNote): Promise<void> {
+  const db = await getDB();
+  await db.put("notes", n);
+}
+
+export async function deleteNote(id: string): Promise<void> {
+  const db = await getDB();
+  await db.delete("notes", id);
 }
