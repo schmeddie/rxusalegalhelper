@@ -1,5 +1,5 @@
 import { openDB, type DBSchema, type IDBPDatabase } from "idb";
-import type { Case, Template, CaseTranscript, MessageNote, Exhibit, Charge } from "./types";
+import type { Case, Template, CaseTranscript, MessageNote, Exhibit, Charge, Witness, ActivityEntry } from "./types";
 
 interface LegalHelperDB extends DBSchema {
   cases: {
@@ -30,13 +30,23 @@ interface LegalHelperDB extends DBSchema {
     value: Charge;
     indexes: { "by-case": string };
   };
+  witnesses: {
+    key: string;
+    value: Witness;
+    indexes: { "by-case": string };
+  };
+  activity: {
+    key: string;
+    value: ActivityEntry;
+    indexes: { "by-case": string };
+  };
 }
 
 let dbPromise: Promise<IDBPDatabase<LegalHelperDB>> | null = null;
 
 function getDB() {
   if (!dbPromise) {
-    dbPromise = openDB<LegalHelperDB>("legal-helper", 4, {
+    dbPromise = openDB<LegalHelperDB>("legal-helper", 5, {
       upgrade(db, oldVersion) {
         if (oldVersion < 1) {
           db.createObjectStore("cases", { keyPath: "id" });
@@ -56,6 +66,12 @@ function getDB() {
         if (oldVersion < 4) {
           const chargeStore = db.createObjectStore("charges", { keyPath: "id" });
           chargeStore.createIndex("by-case", "caseId");
+        }
+        if (oldVersion < 5) {
+          const witnessStore = db.createObjectStore("witnesses", { keyPath: "id" });
+          witnessStore.createIndex("by-case", "caseId");
+          const activityStore = db.createObjectStore("activity", { keyPath: "id" });
+          activityStore.createIndex("by-case", "caseId");
         }
       },
     });
@@ -123,7 +139,6 @@ export async function saveTranscript(t: CaseTranscript): Promise<void> {
 
 export async function deleteTranscript(id: string): Promise<void> {
   const db = await getDB();
-  // Also delete associated notes
   const notes = await db.getAllFromIndex("notes", "by-transcript", id);
   const tx = db.transaction(["transcripts", "notes"], "readwrite");
   await tx.objectStore("transcripts").delete(id);
@@ -181,4 +196,93 @@ export async function saveCharge(c: Charge): Promise<void> {
 export async function deleteCharge(id: string): Promise<void> {
   const db = await getDB();
   await db.delete("charges", id);
+}
+
+// Witnesses
+export async function getWitnessesForCase(caseId: string): Promise<Witness[]> {
+  const db = await getDB();
+  const witnesses = await db.getAllFromIndex("witnesses", "by-case", caseId);
+  return witnesses.sort((a, b) => a.witnessNumber - b.witnessNumber);
+}
+
+export async function saveWitness(w: Witness): Promise<void> {
+  const db = await getDB();
+  await db.put("witnesses", w);
+}
+
+export async function deleteWitness(id: string): Promise<void> {
+  const db = await getDB();
+  await db.delete("witnesses", id);
+}
+
+// Activity Log
+export async function getActivityForCase(caseId: string): Promise<ActivityEntry[]> {
+  const db = await getDB();
+  const entries = await db.getAllFromIndex("activity", "by-case", caseId);
+  return entries.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+}
+
+export async function saveActivity(a: ActivityEntry): Promise<void> {
+  const db = await getDB();
+  await db.put("activity", a);
+}
+
+export async function deleteActivity(id: string): Promise<void> {
+  const db = await getDB();
+  await db.delete("activity", id);
+}
+
+// Export all data
+export async function exportAllData(): Promise<string> {
+  const db = await getDB();
+  const data = {
+    cases: await db.getAll("cases"),
+    templates: (await db.getAll("templates")).map((t) => ({
+      ...t,
+      fileData: Array.from(new Uint8Array(t.fileData)),
+    })),
+    transcripts: await db.getAll("transcripts"),
+    notes: await db.getAll("notes"),
+    exhibits: await db.getAll("exhibits"),
+    charges: await db.getAll("charges"),
+    witnesses: await db.getAll("witnesses"),
+    activity: await db.getAll("activity"),
+    exportedAt: new Date().toISOString(),
+    version: 5,
+  };
+  return JSON.stringify(data, null, 2);
+}
+
+// Import data (merges with existing)
+export async function importData(jsonStr: string): Promise<{ imported: number }> {
+  const data = JSON.parse(jsonStr);
+  const db = await getDB();
+  let count = 0;
+
+  const tx = db.transaction(
+    ["cases", "templates", "transcripts", "notes", "exhibits", "charges", "witnesses", "activity"],
+    "readwrite"
+  );
+
+  for (const c of data.cases || []) {
+    if (!c.status) c.status = "Pre-Filing";
+    await tx.objectStore("cases").put(c);
+    count++;
+  }
+  for (const t of data.templates || []) {
+    if (Array.isArray(t.fileData)) {
+      t.fileData = new Uint8Array(t.fileData).buffer;
+    }
+    await tx.objectStore("templates").put(t);
+    count++;
+  }
+  for (const t of data.transcripts || []) { await tx.objectStore("transcripts").put(t); count++; }
+  for (const n of data.notes || []) { await tx.objectStore("notes").put(n); count++; }
+  for (const e of data.exhibits || []) { await tx.objectStore("exhibits").put(e); count++; }
+  for (const c of data.charges || []) { await tx.objectStore("charges").put(c); count++; }
+  for (const w of data.witnesses || []) { await tx.objectStore("witnesses").put(w); count++; }
+  for (const a of data.activity || []) { await tx.objectStore("activity").put(a); count++; }
+
+  await tx.done;
+  return { imported: count };
 }

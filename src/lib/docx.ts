@@ -1,7 +1,7 @@
 import Docxtemplater from "docxtemplater";
 import PizZip from "pizzip";
 import { saveAs } from "file-saver";
-import type { Case, PlaceholderMapping, CaseVariable, Exhibit, Charge } from "./types";
+import type { Case, PlaceholderMapping, CaseVariable, Exhibit, Charge, Witness } from "./types";
 
 /**
  * Parse a .docx file and extract placeholders matching the pattern {PLACEHOLDER}
@@ -90,6 +90,28 @@ function formatInformationBlock(charges: Charge[]): string {
     lines.push(`COUNT ${countLabel}: ${charge.chargeName}`);
     lines.push(`OFFENSE TYPE: ${charge.offenseClass}`);
     lines.push(`DESCRIPTION: ${charge.description}`);
+    lines.push("");
+  }
+
+  return lines.join("\n");
+}
+
+/**
+ * Format witnesses into a witness list block.
+ */
+function formatWitnessBlock(witnesses: Witness[]): string {
+  if (witnesses.length === 0) return "";
+
+  const lines: string[] = ["WITNESS LIST", ""];
+
+  for (const witness of witnesses) {
+    lines.push(`WITNESS #${witness.witnessNumber}: ${witness.name}`);
+    if (witness.affiliation) {
+      lines.push(`AFFILIATION: ${witness.affiliation}`);
+    }
+    if (witness.expectedTestimony) {
+      lines.push(`EXPECTED TESTIMONY: ${witness.expectedTestimony}`);
+    }
     lines.push("");
   }
 
@@ -236,7 +258,8 @@ export function generateDocument(
   caseData: Case,
   mappings: PlaceholderMapping[],
   exhibits: Exhibit[] = [],
-  charges: Charge[] = []
+  charges: Charge[] = [],
+  witnesses: Witness[] = []
 ): void {
   const zip = new PizZip(fileData);
   const doc = new Docxtemplater(zip, {
@@ -258,6 +281,8 @@ export function generateDocument(
       data[mapping.placeholder] = formatEvidenceBlock(exhibits);
     } else if (variable === "information") {
       data[mapping.placeholder] = formatInformationBlock(charges);
+    } else if (variable === "witnesses") {
+      data[mapping.placeholder] = formatWitnessBlock(witnesses);
     } else if (variable === "charges") {
       // Legacy: just the charge names joined
       if (charges.length > 0) {

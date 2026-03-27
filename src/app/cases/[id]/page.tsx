@@ -3,13 +3,16 @@
 import { useEffect, useState, useRef } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { v4 as uuidv4 } from "uuid";
-import { getCase, getAllTemplates, getTranscriptsForCase, saveTranscript, deleteTranscript, getExhibitsForCase, getChargesForCase } from "@/lib/db";
+import { getCase, saveCase, getAllTemplates, getTranscriptsForCase, saveTranscript, deleteTranscript, getExhibitsForCase, getChargesForCase, getWitnessesForCase, saveActivity, getActivityForCase } from "@/lib/db";
 import { generateDocument } from "@/lib/docx";
-import type { Case, Template, CaseTranscript, Exhibit, Charge } from "@/lib/types";
+import type { Case, Template, CaseTranscript, Exhibit, Charge, Witness, CaseStatus, ActivityEntry } from "@/lib/types";
+import { CASE_STATUSES, CASE_STATUS_COLORS } from "@/lib/types";
 import Link from "next/link";
 import TranscriptViewer from "@/components/TranscriptViewer";
 import EvidenceManager from "@/components/EvidenceManager";
 import ChargesManager from "@/components/ChargesManager";
+import WitnessManager from "@/components/WitnessManager";
+import ActivityTimeline from "@/components/ActivityTimeline";
 
 export default function CaseDetailPage() {
   const params = useParams();
@@ -21,6 +24,8 @@ export default function CaseDetailPage() {
   const [activeTranscript, setActiveTranscript] = useState<CaseTranscript | null>(null);
   const [exhibits, setExhibits] = useState<Exhibit[]>([]);
   const [charges, setCharges] = useState<Charge[]>([]);
+  const [witnesses, setWitnesses] = useState<Witness[]>([]);
+  const [activityKey, setActivityKey] = useState(0);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -36,6 +41,7 @@ export default function CaseDetailPage() {
     getTranscriptsForCase(params.id as string).then(setTranscripts);
     getExhibitsForCase(params.id as string).then(setExhibits);
     getChargesForCase(params.id as string).then(setCharges);
+    getWitnessesForCase(params.id as string).then(setWitnesses);
   }, [params.id, router]);
 
   function refreshExhibits() {
@@ -46,14 +52,42 @@ export default function CaseDetailPage() {
     getChargesForCase(params.id as string).then(setCharges);
   }
 
+  function refreshWitnesses() {
+    getWitnessesForCase(params.id as string).then(setWitnesses);
+  }
+
+  async function logActivity(action: string, detail: string) {
+    const entry: ActivityEntry = {
+      id: uuidv4(),
+      caseId: params.id as string,
+      type: "auto",
+      action,
+      detail,
+      createdAt: new Date().toISOString(),
+    };
+    await saveActivity(entry);
+    setActivityKey(k => k + 1);
+  }
+
+  async function handleStatusChange(newStatus: CaseStatus) {
+    if (!caseData || caseData.status === newStatus) return;
+    const oldStatus = caseData.status;
+    const updated = { ...caseData, status: newStatus, updatedAt: new Date().toISOString() };
+    await saveCase(updated);
+    setCaseData(updated);
+    await logActivity("Status Changed", `${oldStatus} \u2192 ${newStatus}`);
+  }
+
   async function handleGenerate(template: Template) {
     if (!caseData) return;
-    const [latestExhibits, latestCharges] = await Promise.all([
+    const [latestExhibits, latestCharges, latestWitnesses] = await Promise.all([
       getExhibitsForCase(caseData.id),
       getChargesForCase(caseData.id),
+      getWitnessesForCase(caseData.id),
     ]);
-    generateDocument(template.fileData, caseData, template.mappings, latestExhibits, latestCharges);
+    generateDocument(template.fileData, caseData, template.mappings, latestExhibits, latestCharges, latestWitnesses);
     setShowTemplateModal(false);
+    await logActivity("Document Generated", `Generated "${template.name}" document`);
   }
 
   function handleTranscriptUpload(e: React.ChangeEvent<HTMLInputElement>) {
@@ -74,6 +108,7 @@ export default function CaseDetailPage() {
       const updated = await getTranscriptsForCase(caseData.id);
       setTranscripts(updated);
       setActiveTranscript(transcript);
+      await logActivity("Transcript Uploaded", `Uploaded "${file.name}"`);
     };
     reader.readAsText(file);
     if (fileInputRef.current) fileInputRef.current.value = "";
@@ -99,8 +134,29 @@ export default function CaseDetailPage() {
 
       <div className="flex items-start justify-between mb-8">
         <div>
-          <h1 className="text-2xl font-bold">{caseData.caseName}</h1>
+          <div className="flex items-center gap-3">
+            <h1 className="text-2xl font-bold">{caseData.caseName}</h1>
+            <span className={`text-xs px-2.5 py-1 rounded-full font-medium ${CASE_STATUS_COLORS[caseData.status] || "bg-zinc-500/15 text-zinc-400"}`}>
+              {caseData.status}
+            </span>
+          </div>
           <p className="text-muted text-sm mt-1">Case #{caseData.caseNumber}</p>
+          {/* Status Changer */}
+          <div className="flex gap-1.5 mt-3 flex-wrap">
+            {CASE_STATUSES.map((status) => (
+              <button
+                key={status}
+                onClick={() => handleStatusChange(status)}
+                className={`text-[10px] px-2 py-0.5 rounded-full border transition-colors ${
+                  caseData.status === status
+                    ? `${CASE_STATUS_COLORS[status]} border-current`
+                    : "border-border text-muted hover:text-foreground"
+                }`}
+              >
+                {status}
+              </button>
+            ))}
+          </div>
         </div>
         <div className="flex gap-2">
           <button
@@ -154,6 +210,11 @@ export default function CaseDetailPage() {
         <EvidenceManager caseId={caseData.id} onUpdate={refreshExhibits} />
       </div>
 
+      {/* Witnesses */}
+      <div className="bg-surface border border-border rounded-xl p-6 mb-8">
+        <WitnessManager caseId={caseData.id} onUpdate={refreshWitnesses} />
+      </div>
+
       {/* Case Transcripts */}
       <div className="bg-surface border border-border rounded-xl p-6 mb-8">
         <h2 className="text-sm font-semibold text-muted uppercase tracking-wider mb-4">
@@ -205,6 +266,11 @@ export default function CaseDetailPage() {
             )}
           </>
         )}
+      </div>
+
+      {/* Activity Timeline */}
+      <div className="bg-surface border border-border rounded-xl p-6 mb-8">
+        <ActivityTimeline key={activityKey} caseId={caseData.id} />
       </div>
 
       {/* Document Generation */}

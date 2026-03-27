@@ -1,3 +1,35 @@
+export type CaseStatus =
+  | "Pre-Filing"
+  | "Filed"
+  | "Pre-Trial"
+  | "Discovery"
+  | "Trial"
+  | "Sentencing"
+  | "Closed"
+  | "Dismissed";
+
+export const CASE_STATUSES: CaseStatus[] = [
+  "Pre-Filing",
+  "Filed",
+  "Pre-Trial",
+  "Discovery",
+  "Trial",
+  "Sentencing",
+  "Closed",
+  "Dismissed",
+];
+
+export const CASE_STATUS_COLORS: Record<CaseStatus, string> = {
+  "Pre-Filing": "bg-zinc-500/15 text-zinc-400",
+  Filed: "bg-blue-500/15 text-blue-400",
+  "Pre-Trial": "bg-purple-500/15 text-purple-400",
+  Discovery: "bg-cyan-500/15 text-cyan-400",
+  Trial: "bg-amber-500/15 text-amber-400",
+  Sentencing: "bg-orange-500/15 text-orange-400",
+  Closed: "bg-green-500/15 text-green-400",
+  Dismissed: "bg-red-500/15 text-red-400",
+};
+
 export interface Case {
   id: string;
   caseName: string;
@@ -5,6 +37,7 @@ export interface Case {
   assignedJudge: string;
   charges: string;
   defendantName: string;
+  status: CaseStatus;
   createdAt: string;
   updatedAt: string;
 }
@@ -22,7 +55,8 @@ export type CaseVariable =
   | "defendantName"
   | "currentDate"
   | "evidence"
-  | "information";
+  | "information"
+  | "witnesses";
 
 export const CASE_VARIABLE_LABELS: Record<CaseVariable, string> = {
   caseName: "Case Name",
@@ -33,6 +67,7 @@ export const CASE_VARIABLE_LABELS: Record<CaseVariable, string> = {
   currentDate: "Current Date",
   evidence: "Evidence (Exhibits List)",
   information: "Information (Charges Detail)",
+  witnesses: "Witness List",
 };
 
 export type OffenseClass =
@@ -60,7 +95,7 @@ export interface Charge {
   id: string;
   caseId: string;
   countNumber: number;
-  chargeName: string; // e.g. "§ 1601. Murder"
+  chargeName: string;
   offenseClass: OffenseClass;
   description: string;
   createdAt: string;
@@ -71,13 +106,32 @@ export type ExhibitMediaType = "image" | "link" | "other";
 export interface Exhibit {
   id: string;
   caseId: string;
-  exhibitNumber: number; // 1, 2, 3...
-  exhibitLetter: string; // A, B, C...
-  name: string; // e.g. "Video Recording", "Supporting Affidavit"
+  exhibitNumber: number;
+  exhibitLetter: string;
+  name: string;
   mediaType: ExhibitMediaType;
-  source: string; // URL for link, description for other, or image data URL
+  source: string;
   description: string;
-  imageData?: string; // base64 data URL for uploaded images
+  imageData?: string;
+  createdAt: string;
+}
+
+export interface Witness {
+  id: string;
+  caseId: string;
+  witnessNumber: number;
+  name: string;
+  affiliation: string;
+  expectedTestimony: string;
+  createdAt: string;
+}
+
+export interface ActivityEntry {
+  id: string;
+  caseId: string;
+  type: "auto" | "manual";
+  action: string;
+  detail: string;
   createdAt: string;
 }
 
